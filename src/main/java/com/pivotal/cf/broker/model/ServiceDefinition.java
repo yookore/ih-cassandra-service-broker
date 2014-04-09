@@ -57,6 +57,8 @@ public class ServiceDefinition {
 	@JsonProperty("requires")
 	private List<String> requires = new ArrayList<String>();
 	
+	public ServiceDefinition() {}
+	
 	public ServiceDefinition(String id, String name, String description, boolean bindable, List<Plan> plans) {
 		this.id = id;
 		this.name = name;

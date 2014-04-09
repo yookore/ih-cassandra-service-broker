@@ -41,6 +41,8 @@ dependencies {
     compile("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
     compile("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
     compile("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}") 
+
+    compile("com.datastax.cassandra:cassandra-driver-core:2.0.1") 
              
     compile "org.slf4j:slf4j-api:${slf4jVersion}"
     runtime "org.slf4j:jcl-over-slf4j:${slf4jVersion}"

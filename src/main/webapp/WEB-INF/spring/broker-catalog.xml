@@ -14,27 +14,28 @@
   </util:list>
 
   <bean id="serviceDefinition" class="com.pivotal.cf.broker.model.ServiceDefinition">
-    <constructor-arg name="id" value="mongodb"/>
-    <constructor-arg name="name" value="MongoDB"/>
-    <constructor-arg name="description" value="MongoDB Instances"/>
+    <constructor-arg name="id" value="ih-cassandra"/>
+    <constructor-arg name="name" value="IH Cassandra"/>
+    <constructor-arg name="description" value="Provides access to Cassandra"/>
     <constructor-arg name="bindable" value="true"/>
     <constructor-arg name="plans" ref="plans" /> 
     <property name="tags" ref="tags"/>
   </bean>
-    
+
   <util:list id="plans">
     <ref bean="plan" />
   </util:list>
   
   <bean id="plan" class="com.pivotal.cf.broker.model.Plan">
-    <constructor-arg name="id" value="mongo-plan"/>
-    <constructor-arg name="name" value="Default Mongo Plan"/>
-    <constructor-arg name="description" value="This is a default mongo plan.  All services are created equally."/>  
+    <constructor-arg name="id" value="ih-cassandra-plan-default"/>
+    <constructor-arg name="name" value="Default IH Cassandra plan"/>
+    <constructor-arg name="description" value="This is a default Cassandra plan.  All services are created equally."/>  
   </bean>
   
   <util:list id="tags">
-    <value>mongodb</value>
+    <value>cassandra</value>
     <value>document</value>
   </util:list>
+  
   
 </beans>

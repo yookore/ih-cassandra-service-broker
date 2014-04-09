@@ -36,6 +36,8 @@ public class Plan {
 	@JsonProperty("metadata")
 	private Map<String,Object> metadata = new HashMap<String,Object>();
 	
+	public Plan() {}
+	
 	public Plan(String id, String name, String description) {
 		this.id = id;
 		this.name = name;

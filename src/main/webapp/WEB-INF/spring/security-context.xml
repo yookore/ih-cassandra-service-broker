@@ -22,7 +22,7 @@
 		         <security:password-encoder ref="encoder" />
 		         <security:user-service>
 		              <security:user name="admin" 
-		                  password="$2a$10$Cb/rnRtaunRT0/1mro/YKuCqSRNfZRgw6SEMSRsM9HbRLskHWBwUe" 
+		                  password="$2a$10$.W2sx/hgybcyBy.1MN/nd.FQYDPblzRjK79zVL5/7SnTOXaAJUaPy" 
 		                  authorities="ROLE_USER" />
 		         </security:user-service>
 		     </security:authentication-provider>
