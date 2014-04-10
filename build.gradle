@@ -41,8 +41,10 @@ dependencies {
     compile("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
     compile("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
     compile("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}") 
-
-    compile("com.datastax.cassandra:cassandra-driver-core:2.0.1") 
+    compile("org.hectorclient:hector-core:1.1-4")
+    //compile("com.datastax.cassandra:cassandra-driver-core:2.0.1") {
+    //   exclude group:"com.google.guava", module:"guava"
+    //}
              
     compile "org.slf4j:slf4j-api:${slf4jVersion}"
     runtime "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
@@ -64,7 +66,11 @@ dependencies {
     testCompile "junit:junit:${junitVersion}"
     testCompile "org.mockito:mockito-all:${mockitoVersion}"
     testCompile "org.springframework:spring-test:${springVersion}"
-    testCompile "com.jayway.jsonpath:json-path:${jsonpathVersion}"    
+    testCompile "com.jayway.jsonpath:json-path:${jsonpathVersion}"  
+    testCompile "com.google.guava:guava:15.0"  
+    testCompile ("org.cassandraunit:cassandra-unit:2.0.2.1") {
+       exclude group:"com.google.guava", module:"guava"
+    }
 }
 
 task wrapper(type: Wrapper) {
