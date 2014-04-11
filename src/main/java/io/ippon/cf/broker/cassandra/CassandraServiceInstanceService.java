@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pivotal.cf.broker.exception.ServiceBrokerException;
@@ -21,8 +22,9 @@ public class CassandraServiceInstanceService implements ServiceInstanceService {
 
 	private CassandraHelper helper;
 
-	public CassandraServiceInstanceService() {
-		helper = new CassandraHelper("10.0.16.202", "cassandra", "cassandra");
+	@Autowired
+	public CassandraServiceInstanceService(CassandraHelper helper) {
+		this.helper = helper;
 	}
 
 	@Override

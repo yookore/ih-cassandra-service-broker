@@ -5,6 +5,10 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Cluster.Builder;
@@ -19,39 +23,13 @@ import com.datastax.driver.core.Session;
  * 
  * @author pariviere
  */
+@Component
 public class CassandraHelper {
 	private static final Logger logger = LoggerFactory
 			.getLogger(CassandraHelper.class);
 
 	private Cluster cluster;
 
-	/**
-	 * <p>
-	 * Default constructor :
-	 * <ul>
-	 * <li>Use <code>localhost</code> as host</li>
-	 * <li>Use <code>9160</code> as port</li>
-	 * </ul>
-	 * </p>
-	 */
-	public CassandraHelper() {
-		this("localhost", 9160, null, null);
-	}
-
-	/**
-	 * <p>
-	 * <ul>
-	 * <li>Use <code>9160</code> as port</li>
-	 * </ul>
-	 * </p>
-	 * 
-	 * @param address
-	 *            Adress of the contact point
-	 */
-	public CassandraHelper(String address) {
-		this(address, 9160, null, null);
-
-	}
 
 	/**
 	 * <p>
@@ -66,9 +44,12 @@ public class CassandraHelper {
 	 *            authentication
 	 * @param password
 	 */
-	public CassandraHelper(String address, int port, String username,
-			String password) {
-
+	@Autowired
+	public CassandraHelper(@Value(value = "${cassandra.host}") String address,
+			@Value(value = "${cassandra.port}") int port,
+			@Value(value = "${cassandra.username}") String username,
+			@Value(value = "${cassandra.password}") String password) {
+		
 		String msg = String
 				.format("Create connection to Cassandra cluster %s:%s. ",
 						address, port);
@@ -86,16 +67,6 @@ public class CassandraHelper {
 		logger.info(msg);
 
 		this.cluster = builder.build();
-	}
-
-	/**
-	 * 
-	 * @param address
-	 * @param username
-	 * @param password
-	 */
-	public CassandraHelper(String address, String username, String password) {
-		this(address, 9160, username, password);
 	}
 
 	/**
