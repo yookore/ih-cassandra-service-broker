@@ -2,6 +2,8 @@ package io.ippon.cf.broker.cassandra;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.UUID;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -26,4 +28,15 @@ public class CassandraNameUtilsTest {
 				CassandraNameUtils.extractServiceInstanceId(ksName));
 	}
 
+	@Test
+	public void testUsernameGenerator() throws Exception {
+
+		System.out.println(CassandraNameUtils
+				.usernameGenerator("386ee368-d268-41a5-92b8-f3d64bbe6381"));
+	}
+	
+	@Test
+	public void testPasswordGenerator() throws Exception {
+		System.out.println(CassandraNameUtils.passwordGenerator());
+	}
 }
