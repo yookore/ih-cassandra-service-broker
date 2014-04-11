@@ -3,6 +3,8 @@ package io.ippon.cf.broker.cassandra;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.pivotal.cf.broker.exception.ServiceBrokerException;
@@ -14,6 +16,9 @@ import com.pivotal.cf.broker.service.ServiceInstanceService;
 @Service
 public class CassandraServiceInstanceService implements ServiceInstanceService {
 
+	private static final Logger logger = LoggerFactory
+			.getLogger(CassandraServiceInstanceService.class);
+
 	private CassandraHelper helper;
 
 	public CassandraServiceInstanceService() {
@@ -22,13 +27,13 @@ public class CassandraServiceInstanceService implements ServiceInstanceService {
 
 	@Override
 	public List<ServiceInstance> getAllServiceInstances() {
-
 		List<ServiceInstance> serviceInstances = new ArrayList<ServiceInstance>();
 
 		try {
 			for (String ksName : helper.listKeyspace()) {
 
-				String serviceInstanceId = extractServiceInstanceId(ksName);
+				String serviceInstanceId = CassandraNameUtils
+						.extractServiceInstanceId(ksName);
 
 				if (serviceInstanceId != null) {
 					serviceInstances.add(new ServiceInstance(serviceInstanceId,
@@ -36,7 +41,7 @@ public class CassandraServiceInstanceService implements ServiceInstanceService {
 				}
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.error("Error while guerying CassandraHelp", ex);
 		}
 
 		return serviceInstances;
@@ -52,7 +57,7 @@ public class CassandraServiceInstanceService implements ServiceInstanceService {
 				serviceInstanceId, service.getId(), planId, organizationGuid,
 				spaceGuid, null);
 
-		String ksName = computeKsName(serviceInstanceId);
+		String ksName = CassandraNameUtils.computeKsName(serviceInstanceId);
 		try {
 			boolean ksExists = helper.keyspaceExists(ksName);
 
@@ -64,6 +69,8 @@ public class CassandraServiceInstanceService implements ServiceInstanceService {
 				return serviceInstance;
 			}
 		} catch (Exception ex) {
+			logger.error("Can not create service instance" + serviceInstanceId,
+					ex);
 			throw new ServiceBrokerException(ex.getMessage());
 		}
 	}
@@ -79,30 +86,13 @@ public class CassandraServiceInstanceService implements ServiceInstanceService {
 			throws ServiceBrokerException {
 
 		try {
-			String ksName = computeKsName(id);
+			String ksName = CassandraNameUtils.computeKsName(id);
 			helper.dropKeyspace(ksName);
 		} catch (Exception ex) {
+			logger.error("Can not delete service instance " + id, ex);
 			throw new ServiceBrokerException(ex.getMessage());
 		}
 
 		return getServiceInstance(id);
 	}
-
-	protected String computeKsName(String serviceInstanceId) {
-		serviceInstanceId = serviceInstanceId.replaceAll("-", "_");
-		return CF_PREFIX + serviceInstanceId;
-	}
-
-	protected String extractServiceInstanceId(String ksName) {
-		if (ksName.startsWith(CF_PREFIX)) {
-			String serviceInstanceId = ksName.substring(CF_PREFIX.length(),
-					ksName.length());
-			return serviceInstanceId.replaceAll("_", "-");
-		}
-
-		return null;
-	}
-
-	private static String CF_PREFIX = "cf_";
-
 }
