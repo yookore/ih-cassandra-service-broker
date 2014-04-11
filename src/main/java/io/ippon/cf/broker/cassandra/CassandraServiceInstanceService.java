@@ -25,14 +25,18 @@ public class CassandraServiceInstanceService implements ServiceInstanceService {
 
 		List<ServiceInstance> serviceInstances = new ArrayList<ServiceInstance>();
 
-		for (String ksName : helper.listKeySpace()) {
+		try {
+			for (String ksName : helper.listKeyspace()) {
 
-			String serviceInstanceId = extractServiceInstanceId(ksName);
+				String serviceInstanceId = extractServiceInstanceId(ksName);
 
-			if (serviceInstanceId != null) {
-				serviceInstances.add(new ServiceInstance(serviceInstanceId,
-						null, null, null, null, null));
+				if (serviceInstanceId != null) {
+					serviceInstances.add(new ServiceInstance(serviceInstanceId,
+							null, null, null, null, null));
+				}
 			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 
 		return serviceInstances;
@@ -49,18 +53,18 @@ public class CassandraServiceInstanceService implements ServiceInstanceService {
 				spaceGuid, null);
 
 		String ksName = computeKsName(serviceInstanceId);
-		boolean ksExists = helper.keyspaceExists(ksName);
+		try {
+			boolean ksExists = helper.keyspaceExists(ksName);
 
-		if (ksExists) {
-			throw new ServiceInstanceExistsException(serviceInstance);
-		} else {
-			try {
-				helper.createKeySpace(ksName);
+			if (ksExists) {
+				throw new ServiceInstanceExistsException(serviceInstance);
+			} else {
+				helper.createKeypace(ksName);
 
 				return serviceInstance;
-			} catch (Exception ex) {
-				throw new ServiceBrokerException(ex.getMessage());
 			}
+		} catch (Exception ex) {
+			throw new ServiceBrokerException(ex.getMessage());
 		}
 	}
 
@@ -76,11 +80,11 @@ public class CassandraServiceInstanceService implements ServiceInstanceService {
 
 		try {
 			String ksName = computeKsName(id);
-			helper.dropKeySpace(ksName);
+			helper.dropKeyspace(ksName);
 		} catch (Exception ex) {
 			throw new ServiceBrokerException(ex.getMessage());
 		}
-		
+
 		return getServiceInstance(id);
 	}
 
