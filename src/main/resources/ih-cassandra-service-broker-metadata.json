@@ -23,7 +23,7 @@
               "bullets": [
                   "Shared Cassandra cluster",
                   "Dev & testing only",
-                  "Cassandra 2.0.6",
+                  "Cassandra 2.0.6"
               ]
            }
         }

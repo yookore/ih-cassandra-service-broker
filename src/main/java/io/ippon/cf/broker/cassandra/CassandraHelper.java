@@ -43,6 +43,7 @@ public class CassandraHelper {
 
 	private String hosts;
 	private int port;
+	private int replicationFactor;
 
 	/**
 	 * <p>
@@ -61,10 +62,12 @@ public class CassandraHelper {
 	public CassandraHelper(@Value(value = "${cassandra.host}") String address,
 			@Value(value = "${cassandra.port}") int port,
 			@Value(value = "${cassandra.username}") String username,
-			@Value(value = "${cassandra.password}") String password) {
+			@Value(value = "${cassandra.password}") String password,
+			@Value(value = "${cassandra.replication_factor}") int replicationFactor) {
 
 		this.hosts = address;
 		this.port = port;
+		this.replicationFactor = replicationFactor;
 
 		String msg = String
 				.format("Create connection to Cassandra cluster %s:%s. ",
@@ -94,9 +97,9 @@ public class CassandraHelper {
 	 */
 	public void createKeypace(String name) throws Exception {
 
-		executeCQL(String.format("CREATE KEYSPACE %s  with replication = "
-				+ "{'class': 'SimpleStrategy', 'replication_factor' : 1};",
-				name));
+		executeCQL(String.format("CREATE KEYSPACE %s with replication = "
+				+ "{'class': 'SimpleStrategy', 'replication_factor' : %d};",
+				name, replicationFactor));
 	}
 
 	public void createServiceInstance(String serviceInstanceId, String ksName,
