@@ -21,9 +21,9 @@
            "metadata":{
               "cost": 0.0,
               "bullets": [
-                  "Shared Cassandra server",
-                  "No limit",
-                  "Dev & testing purpose"
+                  "Shared Cassandra cluster",
+                  "Dev & testing only",
+                  "Cassandra 2.0.6",
               ]
            }
         }

@@ -4,13 +4,31 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.UUID;
 
+/**
+ * <p>
+ * Utility class for names and identity generation.
+ * </p>
+ * 
+ * @author pariviere
+ * 
+ */
 public class CassandraNameUtils {
 
+	/**
+	 * 
+	 * @param serviceInstanceId
+	 * @return
+	 */
 	public static String computeKsName(String serviceInstanceId) {
 		serviceInstanceId = serviceInstanceId.replaceAll("-", "_");
 		return CF_PREFIX + serviceInstanceId;
 	}
 
+	/**
+	 * 
+	 * @param ksName
+	 * @return
+	 */
 	public static String extractServiceInstanceId(String ksName) {
 		if (ksName.startsWith(CF_PREFIX)) {
 			String serviceInstanceId = ksName.substring(CF_PREFIX.length(),
@@ -20,11 +38,23 @@ public class CassandraNameUtils {
 
 		return null;
 	}
-	
+
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	public static String passwordGenerator() throws Exception {
-		return UUID.randomUUID().toString().replaceAll("[^a-zA-Z0-9]+", "").substring(0, 16);
+		return UUID.randomUUID().toString().replaceAll("[^a-zA-Z0-9]+", "")
+				.substring(0, 16);
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	public static String usernameGenerator(String id) throws Exception {
 		// https://github.com/cloudfoundry-community/cf-mysql-java-broker/blob/master/src/main/groovy/org/cloudfoundry/community/broker/mysql/service/ServiceBindingService.groovy#L53
 		MessageDigest digest = MessageDigest.getInstance("MD5");

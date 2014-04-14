@@ -33,8 +33,10 @@ public class CassandraNameUtilsTest {
 
 		System.out.println(CassandraNameUtils
 				.usernameGenerator("386ee368-d268-41a5-92b8-f3d64bbe6381"));
+		System.out.println(CassandraNameUtils
+				.usernameGenerator("5b2dccd6-f7e0-4785-a817-6b2a1828ab2c"));
 	}
-	
+
 	@Test
 	public void testPasswordGenerator() throws Exception {
 		System.out.println(CassandraNameUtils.passwordGenerator());

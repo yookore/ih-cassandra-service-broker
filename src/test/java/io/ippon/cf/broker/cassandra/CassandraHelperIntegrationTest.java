@@ -166,4 +166,23 @@ public class CassandraHelperIntegrationTest {
 		helper.revokeUserToKeyspace(uName, ksName);
 
 	}
+
+	@Test
+	public void testPostConstruct() throws Exception {
+		CassandraHelper helper = buildHelper();
+
+		helper.ensureBrokerKeyspace();
+	}
+
+	@Test
+	public void testCreateServiceInstance() throws Exception {
+		CassandraHelper helper = buildHelper();
+		helper.ensureBrokerKeyspace();
+
+		Thread.sleep(5000);
+		helper.createServiceInstance("8081a3db-f323-4ef1-bdf8-1440adc866a0",
+				"mykeyspace", "459b99a6-1834-4376-9903-5fe14650ab98",
+				"c4617b8b-463a-466c-a769-6d3a62d614bf",
+				"0fc30d27-0d25-492c-b21b-bd0900f6c4ce");
+	}
 }
