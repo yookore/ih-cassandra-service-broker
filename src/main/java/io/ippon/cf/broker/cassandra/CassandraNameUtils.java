@@ -15,6 +15,8 @@ import java.util.UUID;
 public class CassandraNameUtils {
 
 	/**
+	 * <p>
+	 * </p>
 	 * 
 	 * @param serviceInstanceId
 	 * @return
@@ -25,6 +27,8 @@ public class CassandraNameUtils {
 	}
 
 	/**
+	 * <p>
+	 * </p>
 	 * 
 	 * @param ksName
 	 * @return
@@ -40,6 +44,9 @@ public class CassandraNameUtils {
 	}
 
 	/**
+	 * <p>
+	 * Generates a Cassandra compatible password
+	 * </p>
 	 * 
 	 * @return
 	 * @throws Exception
@@ -50,18 +57,24 @@ public class CassandraNameUtils {
 	}
 
 	/**
+	 * <p>
+	 * Generates a Cassandra compatible username from an id. 
+	 * </p>
 	 * 
 	 * @param id
 	 * @return
 	 * @throws Exception
 	 */
 	public static String usernameGenerator(String id) throws Exception {
-		// https://github.com/cloudfoundry-community/cf-mysql-java-broker/blob/master/src/main/groovy/org/cloudfoundry/community/broker/mysql/service/ServiceBindingService.groovy#L53
+		// https://github.com/cloudfoundry-community/cf-mysql-java-broker/blob/master/
+		// src/main/groovy/org/cloudfoundry/community/broker/mysql/service/ServiceBindingService.groovy#L53
 		MessageDigest digest = MessageDigest.getInstance("MD5");
 		digest.update(id.getBytes());
 
-		return new BigInteger(1, digest.digest()).toString(16)
+		String uuid = new BigInteger(1, digest.digest()).toString(16)
 				.replaceAll("[^a-zA-Z0-9]+", "").substring(0, 16);
+
+		return String.format("%suser_%s", CF_PREFIX, uuid);
 	}
 
 	private static String CF_PREFIX = "cf_";
