@@ -115,6 +115,15 @@ public class CassandraHelper {
 		executeCQL(cql);
 	}
 
+	/**
+	 * 
+	 * @param serviceInstanceBindingId
+	 * @param serviceInstanceId
+	 * @param username
+	 * @param password
+	 * @return
+	 * @throws Exception
+	 */
 	public ServiceInstanceBinding createServiceInstanceBinding(
 			String serviceInstanceBindingId, String serviceInstanceId,
 			String username, String password) throws Exception {
@@ -133,7 +142,7 @@ public class CassandraHelper {
 
 		Map<String, Object> credentials = new HashMap<String, Object>();
 		credentials.put("address", this.hosts);
-		credentials.put("port", this.port);
+		credentials.put("port", 9160);
 		credentials.put("keyspace",
 				CassandraNameUtils.computeKsName(serviceInstanceId));
 		credentials.put("username", username);
@@ -225,7 +234,7 @@ public class CassandraHelper {
 		Session session = cluster.connect();
 
 		try {
-			logger.debug("Executes CQL : '%s'", cql);
+			logger.debug("Executes CQL : '{}'", cql);
 			return session.execute(cql);
 		} catch (Exception ex) {
 			logger.error(String.format("Fail to execute CQL order '%s'", cql),
@@ -392,6 +401,14 @@ public class CassandraHelper {
 		return userNames;
 	}
 
+	/**
+	 * <p>
+	 * Ensure the required keyspace and column families are present in Cassandra for 
+	 * support this service broker
+	 * </p>
+	 * 
+	 * @throws Exception
+	 */
 	@PostConstruct
 	public void ensureBrokerKeyspace() throws Exception {
 
@@ -399,24 +416,38 @@ public class CassandraHelper {
 			logger.info(String.format("No keyspace %s found. Creating it..",
 					BROKER_KEYSPACE_NAME));
 
-			createKeypace(BROKER_KEYSPACE_NAME);
-
+			createKeypace(BROKER_KEYSPACE_NAME);	
+		}
+		
+		Row serviceInstanceRow = executeCQL(" select * from system.schema_columnfamilies where keyspace_name = 'cf_cassandra_service_broker_persistence' "
+					+ "and columnfamily_name = 'serviceinstance';").one();
+		
+		if (serviceInstanceRow == null) {
 			logger.info(String.format("Creating %s table...",
 					"cf_cassandra_service_broker_persistence.serviceinstance"));
 
 			String cql = "CREATE TABLE cf_cassandra_service_broker_persistence.serviceinstance(serviceinstanceid varchar PRIMARY KEY, "
 					+ "keyspacename varchar, planid varchar, organizationid varchar, spaceid varchar);";
-
+			
+			executeCQL(cql);
+		}
+		
+		
+		Row serviceInstanceBindingRow = executeCQL(" select * from system.schema_columnfamilies where keyspace_name = 'cf_cassandra_service_broker_persistence' "
+				+ "and columnfamily_name = 'serviceinstancebinding';").one();
+	
+		if (serviceInstanceBindingRow == null) {
 			logger.info(String
 					.format("Creating %s table...",
 							"cf_cassandra_service_broker_persistence.serviceinstancebinding"));
-
-			cql = "CREATE TABLE cf_cassandra_service_broker_persistence.serviceinstancebinding(serviceinstancebindingid varchar PRIMARY KEY, "
+	
+			String cql = "CREATE TABLE cf_cassandra_service_broker_persistence.serviceinstancebinding(serviceinstancebindingid varchar PRIMARY KEY, "
 					+ "serviceinstanceid varchar, username varchar, password varchar);";
-
+	
 			executeCQL(cql);
 		}
 	}
+	
 
 	/**
 	 * <p>

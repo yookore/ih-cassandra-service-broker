@@ -87,7 +87,7 @@ public class CassandraHelperIntegrationTest {
 
 	protected CassandraHelper buildHelper() {
 		CassandraHelper helper = new CassandraHelper("127.0.0.1", 9142,
-				"cassandra", "cassandra");
+				"cassandra", "cassandra", 1);
 		return helper;
 	}
 
@@ -171,6 +171,9 @@ public class CassandraHelperIntegrationTest {
 	public void testPostConstruct() throws Exception {
 		CassandraHelper helper = buildHelper();
 
+		// could be trigger several times
+		helper.ensureBrokerKeyspace();
+		helper.ensureBrokerKeyspace();
 		helper.ensureBrokerKeyspace();
 	}
 
@@ -178,8 +181,7 @@ public class CassandraHelperIntegrationTest {
 	public void testCreateServiceInstance() throws Exception {
 		CassandraHelper helper = buildHelper();
 		helper.ensureBrokerKeyspace();
-
-		Thread.sleep(5000);
+		
 		helper.createServiceInstance("8081a3db-f323-4ef1-bdf8-1440adc866a0",
 				"mykeyspace", "459b99a6-1834-4376-9903-5fe14650ab98",
 				"c4617b8b-463a-466c-a769-6d3a62d614bf",
