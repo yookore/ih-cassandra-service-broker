@@ -46,3 +46,7 @@ You have several alternatives to deploy a service broker in Cloud Foundry :
  - Deploy as an Cloud Foundry application via `cf push`
 
 Once the service broker is available via an URL accessible from Cloud Foundry, you can then register the service broker via the  `cf create-service-broker` command.
+
+# Credits
+
+This broker is build from the sample [spring-service-broker](https://github.com/cloudfoundry-community/spring-service-broker) made by the Cloud Foundry community.
