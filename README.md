@@ -1,7 +1,7 @@
 IH Cassandra Service Broker
 ===========================
 
-IH Cassandra Service Broker provides provides Cassandra keyspaces as service in Cloud Foundry. It has been developped by [Ippon Hosting](http://www.ippon-hosting.com/)
+IH Cassandra Service Broker provides Cassandra keyspaces as service in Cloud Foundry. It has been developped by [Ippon Hosting](http://www.ippon-hosting.com/)
 
 The broker itself does not provides Cassandra but is meant to be deployed alongside a Cassandra cluster and will perform management tasks : 
 
@@ -11,7 +11,9 @@ The broker itself does not provides Cassandra but is meant to be deployed alongs
  
 # Requirements
 
-Multi-tenant capabilities is a requirement which is not the default with Cassandra. To implement this needs, IH Cassandra Service Broker requires Cassandra to implement both authentication and authorization. Short story : setup `cassandra.yaml` directive as follow :
+Multi-tenant capabilities is a requirement which is not the default with Cassandra. To implement this needs, IH Cassandra Service Broker requires Cassandra to implement both authentication and authorization. 
+
+Short story : setup `cassandra.yaml` directive as follow :
 
     #authenticator: AllowAllAuthenticator
     authenticator: PasswordAuthenticator
