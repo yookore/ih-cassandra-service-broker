@@ -97,4 +97,4 @@ Once the service broker is available via an URL accessible from Cloud Foundry, y
 
 # Credits
 
-This broker is build from the sample [spring-service-broker](https://github.com/cloudfoundry-community/spring-service-broker) made by the Cloud Foundry community.
+This broker is built from the sample [spring-service-broker](https://github.com/cloudfoundry-community/spring-service-broker) made by the Cloud Foundry community.
