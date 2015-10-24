@@ -3,6 +3,7 @@
      "name":"ih-cassandra",
      "description":"Cassandra cluster by Ippon Hosting. Only for testing.",
      "bindable":true,
+     "requires":["syslog_drain"], 
      "tags":[
        "cassandra",
        "nosql",

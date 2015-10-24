@@ -1,0 +1,6 @@
+---
+applications:
+- name: ih-cassandra-service-broker
+  instances: 1
+  memory: 1G
+  path: build/libs/ih-cassandra-service-broker.war
